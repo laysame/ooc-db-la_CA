@@ -1,53 +1,42 @@
 package linear_system_solver;
 
-import java.util.Scanner;
+import java.util.HashMap;
+import java.util.Map;
 
-public class Solver {
-    /**
-     * @param prompt   Prompt as a String
-     * @param minValue Minimum value expected from the user as an integer
-     * @param maxValue Maximum value expected from the user as an integer
-     * @return the number as an integer
-     */
-    public int askInteger(String prompt, int minValue, int maxValue) {
-        Scanner userInput = new Scanner(System.in);
-        int number = -1;
-        boolean valid = false;
+public class Solver implements SolverInterface {
+    public double a, b, c, d;
+    DataInput dataInput = new DataInput();
 
-        do {
-            System.out.println(prompt);
-            try {
-                number = Integer.parseInt(userInput.nextLine());
-                // check the range
-                if ((number < minValue) || (number > maxValue)) {
-                    System.out.println("ERROR >> Invalid number");
-                } else {
-                    valid = true;
-                }
-            } catch (Exception e) {
-                System.out.println("ERROR >> Insert a integer value. Please, try again!");
-            }
-        } while (!valid);
-
-        return number;
+    @Override
+    public int getVariablesQuantity() {
+        int variableQtt = dataInput.askInteger("***** Hello :) *****\n" +
+                "This is a System Equation Solver for equations of two or three variables only!\n" +
+                "You can start using it by typing the quantity of variables for both equations:\n", 2, 3);
+        return variableQtt;
     }
 
-    public void linear_calc_solver() {
-        char[] var = {'x', 'y', 'z'};
-        int input = askInteger("Enter the number of variables in the equations: ", 2, 3);
-
-        switch (input) {
-
-            case 2:
-                System.out.println("Enter the coefficients 'a', 'b' and 'c' for each equations");
-                System.out.println("ax + by = c");
-                break;
-            case 3:
-                System.out.println("Enter the coefficients 'a', 'b','c' and 'd' for each equations");
-                System.out.println("ax + by + cz = d");
-                break;
-            default:
+    public Map<String, Number> getCoefficients(int variableQtt) {
+        Map<String, Number> coefficients;
+        coefficients = new HashMap<>();
+        a = dataInput.askDouble("a=");
+        b = dataInput.askDouble("b=");
+        c = dataInput.askDouble("c=");
+        // c2 = dataInput.askDouble("c (Equation 2)=");
+        coefficients.put("a", a);
+        coefficients.put("b", b);
+        coefficients.put("c", c);
+        if (variableQtt == 3) {
+            d = dataInput.askDouble("d=");
+            coefficients.put("d", d);
         }
+        System.out.println(coefficients);
+
+        return coefficients;
+    }
+
+    public void getMatrix() {
 
     }
+
+
 }
