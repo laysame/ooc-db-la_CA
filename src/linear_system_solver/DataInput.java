@@ -7,14 +7,17 @@ public class DataInput implements DataInputInterface {
     int numberInt = -1;
     double numberDb = -1;
 
+// >> (ax + by + c = 0) /  >> (ax + by + cz + d = 0)
 
     @Override
     public int askInteger(String prompt, int minValue, int maxValue) {
         boolean valid = false;
         do {
             System.out.println(prompt);
-            System.out.println("Type " + minValue + " for equations with " + minValue + " variables. >> (ax + by + c = 0)\n" +
-                    "or Type " + maxValue + " for equations with " + maxValue + " variables. >> (ax + by + cz + d = 0)");
+            System.out.println("Type " + "'" + minValue + "'" + " for equations with " + minValue + " variables (x, y)\n" +
+                    "or \n" +
+                    "Type " + "'" + maxValue + "'" + " for equations with " + maxValue + " variables (x, y and z) \n" +
+                    ">>");
             try {
                 numberInt = Integer.parseInt(userInput.nextLine());
                 // check the range
