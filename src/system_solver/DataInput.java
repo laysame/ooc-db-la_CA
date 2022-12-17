@@ -1,4 +1,4 @@
-package linear_system_solver;
+package system_solver;
 
 import java.util.Scanner;
 

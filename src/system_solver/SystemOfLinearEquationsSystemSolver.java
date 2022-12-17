@@ -1,10 +1,10 @@
-package linear_system_solver;
+package system_solver;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class Solver implements SolverInterface {
+public class SystemOfLinearEquationsSystemSolver implements SystemSolverInterface {
     DataInput dataInput = new DataInput();
 
     @Override
@@ -53,13 +53,13 @@ public class Solver implements SolverInterface {
         row2col2A = coefficients2.get(1);
 
         // Gets the determinant of a matrix 2x2
-        double determinant = getDeterminant(row1col1A, row1col2A, row2col1A, row2col2A);
+        double determinant = getTwoByTwoMatrixDeterminant(row1col1A, row1col2A, row2col1A, row2col2A);
         double oneOverDeterminant = 1.0 / determinant;
 
         // If determinant != 0, calculate the inverse of Matrix A and multiply the result by Matrix B
         // and get the coordinates x and y
         if (determinant == 0) {
-            System.out.println("Determinant is zero, therefore inverse matrix doesn't exist!");
+            throw new NoSolutionException("Determinant is zero, therefore inverse matrix doesn't exist!");
         }
 
         // Coefficients a and b from Matrix B 2x2
@@ -104,17 +104,17 @@ public class Solver implements SolverInterface {
 
         //Find Minors of each element
         // Values Matrix M - First Row
-        double minorRow1Col1 = getDeterminant(row2col2A, row2col3A, row3col2A, row3col3A);
-        double minorRow1Col2 = getDeterminant(row2col1A, row2col3A, row3col1A, row3col3A);
-        double minorRow1Col3 = getDeterminant(row2col1A, row2col2A, row3col1A, row3col2A);
+        double minorRow1Col1 = getTwoByTwoMatrixDeterminant(row2col2A, row2col3A, row3col2A, row3col3A);
+        double minorRow1Col2 = getTwoByTwoMatrixDeterminant(row2col1A, row2col3A, row3col1A, row3col3A);
+        double minorRow1Col3 = getTwoByTwoMatrixDeterminant(row2col1A, row2col2A, row3col1A, row3col2A);
         // Values Matrix M - Second Row
-        double minorRow2Col1 = getDeterminant(row1col2A, row1col3A, row3col2A, row3col3A);
-        double minorRow2Col2 = getDeterminant(row1col1A, row1col3A, row3col1A, row3col3A);
-        double minorRow2Col3 = getDeterminant(row1col1A, row1col2A, row3col1A, row3col2A);
+        double minorRow2Col1 = getTwoByTwoMatrixDeterminant(row1col2A, row1col3A, row3col2A, row3col3A);
+        double minorRow2Col2 = getTwoByTwoMatrixDeterminant(row1col1A, row1col3A, row3col1A, row3col3A);
+        double minorRow2Col3 = getTwoByTwoMatrixDeterminant(row1col1A, row1col2A, row3col1A, row3col2A);
         // Values Matrix M - Third Row
-        double minorRow3Col1 = getDeterminant(row1col2A, row1col3A, row2col2A, row2col3A);
-        double minorRow3Col2 = getDeterminant(row1col1A, row1col3A, row2col1A, row2col3A);
-        double minorRow3Col3 = getDeterminant(row1col1A, row1col2A, row2col1A, row2col2A);
+        double minorRow3Col1 = getTwoByTwoMatrixDeterminant(row1col2A, row1col3A, row2col2A, row2col3A);
+        double minorRow3Col2 = getTwoByTwoMatrixDeterminant(row1col1A, row1col3A, row2col1A, row2col3A);
+        double minorRow3Col3 = getTwoByTwoMatrixDeterminant(row1col1A, row1col2A, row2col1A, row2col2A);
 
         // Find Cofactor
         // Values Matrix C - First Row
@@ -131,11 +131,12 @@ public class Solver implements SolverInterface {
         double cofactorRow3Col3 = minorRow3Col3;
 
         // Get determinant Matrix 3x3 = Row 1 Matrix A by Row 1 Matrix C
-        double determinant = getDeterminantMatrixThreeByThree(row1col1A, row1col2A, row1col3A, cofactorRow1Col1, cofactorRow1Col2, cofactorRow1Col3);
+        double determinant = getThreeByThreeMatrixDeterminant(row1col1A, row1col2A, row1col3A, cofactorRow1Col1, cofactorRow1Col2, cofactorRow1Col3);
 
         if (determinant == 0) {
-            System.out.println("Determinant is zero, therefore inverse matrix doesn't exist!");
+            throw new NoSolutionException("Determinant is zero, therefore inverse matrix doesn't exist!");
         }
+
         double oneOverDeterminant = 1 / determinant;
 
         // Find Adjoin of Matrix A
@@ -186,14 +187,14 @@ public class Solver implements SolverInterface {
         return solution;
     }
 
-    public double getDeterminantMatrixThreeByThree(double a1, double a2, double a3, double c1, double c2, double c3) {
-        return (a1 * c1) + (a2 * c2) + (a3 * c3);
-    }
-
-    public double getDeterminant(double a, double b, double c, double d) {
+    public double getTwoByTwoMatrixDeterminant(double a, double b, double c, double d) {
         return (a * d) - (b * c);
     }
 
+    public double getThreeByThreeMatrixDeterminant(double a1, double a2, double a3, double c1, double c2, double c3) {
+        return (a1 * c1) + (a2 * c2) + (a3 * c3);
+    }
+    
     @Override
     public void printEquation(List<Double> coefficients) {
         double a, b, c, d;
