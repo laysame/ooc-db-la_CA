@@ -1,3 +1,7 @@
+import authentication.AuthenticationManager;
+import authentication.InvalidUsernameOrPasswordException;
+import db.DatabaseManager;
+import models.User;
 import system_solver.NoSolutionException;
 import system_solver.SystemOfLinearEquationsSystemSolver;
 import system_solver.SystemSolverInterface;
@@ -5,10 +9,33 @@ import system_solver.SystemSolverInterface;
 import java.util.List;
 
 public class Main {
+    static final String DATABASE_HOST = "localhost";
+    static final String DATABASE_USER = "ooc2022";
+    static final String DATABASE_PASSWORD = "ooc2022";
+    static final String DATABASE_NAME = "system_solver";
+
     public static void main(String[] args) {
-        SystemSolverInterface systemSolver = new SystemOfLinearEquationsSystemSolver();
-        int numOfVariables = systemSolver.getNumOfVariables();
-        printIntro(systemSolver, numOfVariables);
+        DatabaseManager databaseManager = new DatabaseManager();
+
+        if (!databaseManager.connect(DATABASE_HOST, DATABASE_USER, DATABASE_PASSWORD, DATABASE_NAME)) {
+            throw new RuntimeException("Unable to connect to the database: check your connection!");
+        }
+
+        AuthenticationManager authenticationManager = new AuthenticationManager(databaseManager);
+
+        try {
+            User user = authenticationManager.authenticate("CCT", "Dublin");
+
+            System.out.println(user.getFirstName());
+            System.out.println(user.getAccountType().getDescription());
+
+        } catch (InvalidUsernameOrPasswordException e) {
+
+        }
+
+        // SystemSolverInterface systemSolver = new SystemOfLinearEquationsSystemSolver();
+        // int numOfVariables = systemSolver.getNumOfVariables();
+        // printIntro(systemSolver, numOfVariables);
     }
 
     public static void printIntro(SystemSolverInterface systemSolver, int numOfVariables) {
