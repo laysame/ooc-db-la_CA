@@ -2,7 +2,6 @@ package models;
 
 public class AccountType {
     private int accountId;
-
     private String description;
 
     public int getAccountId() {

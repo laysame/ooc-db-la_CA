@@ -16,6 +16,14 @@ public class DatabaseManager {
     private Connection connection;
     private String database;
 
+    /**
+     *
+     * @param host
+     * @param user
+     * @param password
+     * @param database
+     * @return true if the database is connected or false if there is no connection
+     */
     public boolean connect(String host, String user, String password, String database) {
         this.database = database;
 
@@ -27,6 +35,11 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     *
+     * @param id user id
+     * @return Account type either 1 for admin or 2 for regular users
+     */
     public AccountType getAccountTypeById(int id) {
         try {
             Statement statement = connection.createStatement();
@@ -49,6 +62,11 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     *
+     * @param id user id
+     * @return a new user selected by its id
+     */
     public User getUserById(int id) {
         try {
             Statement statement = connection.createStatement();
@@ -81,6 +99,11 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     *
+     * @param username
+     * @return a new user selected by its username
+     */
     public User getUserByUsername(String username) {
         try {
             Statement statement = connection.createStatement();
@@ -113,6 +136,10 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Sets the account type and its description to the new user
+     * @return an array list containing all user of the system
+     */
     public List<User> getAllUsers() {
         try {
             Statement statement = connection.createStatement();
@@ -148,6 +175,11 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     *
+     * @param user
+     * @return the new user added to the database
+     */
     public boolean addUser(User user) {
         try {
             Statement statement = connection.createStatement();
@@ -176,6 +208,11 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     *
+     * @param user
+     * @return true or false if the user has been updated on the system
+     */
     public boolean updateUser(User user) {
         try {
             Statement statement = connection.createStatement();
@@ -195,6 +232,11 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     *
+     * @param user
+     * @return true or false if the user has been deleted from the system
+     */
     public boolean deleteUser(User user) {
         try {
             Statement statement = connection.createStatement();
@@ -211,6 +253,11 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     *
+     * @param user
+     * @return array list of operations ever made by the user
+     */
     public List<Operation> getOperationsByUser(User user) {
         try {
             Statement statement = connection.createStatement();
@@ -245,6 +292,11 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     *
+     * @param operation
+     * @return true or false if the operation made by the user has been added
+     */
     public boolean addOperation(Operation operation) {
         try {
             Statement statement = connection.createStatement();
@@ -258,7 +310,7 @@ public class DatabaseManager {
                             operation.getUser().getUserId() + "," +
                             "'" + operation.getFirstEquation() + "'," +
                             "'" + operation.getSecondEquation() + "'," +
-                            "'" + operation.getThirdEquation() + "'," +
+                            (operation.getThirdEquation() != null ? "'" + operation.getThirdEquation() + "'" : "NULL") + "," +
                             operation.getXValue() + "," +
                             operation.getYValue() + "," +
                             operation.getZValue() + "," +

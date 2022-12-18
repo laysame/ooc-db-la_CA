@@ -1,5 +1,6 @@
 package system_solver;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +9,7 @@ public class SystemOfLinearEquationsSystemSolver implements SystemSolverInterfac
     DataInput dataInput = new DataInput();
 
     @Override
+
     public int getNumOfVariables() {
         int numOfVariables = dataInput.askNumberOfVariables("***** Hello :) *****\n" + "This is a Systems of Linear Equations of two and three variables Solver!\n" + "You can start using it by typing in the quantity of variables for both equations:\n", 2, 3);
         return numOfVariables;
@@ -194,7 +196,7 @@ public class SystemOfLinearEquationsSystemSolver implements SystemSolverInterfac
     public double getThreeByThreeMatrixDeterminant(double a1, double a2, double a3, double c1, double c2, double c3) {
         return (a1 * c1) + (a2 * c2) + (a3 * c3);
     }
-    
+
     @Override
     public void printEquation(List<Double> coefficients) {
         double a, b, c, d;

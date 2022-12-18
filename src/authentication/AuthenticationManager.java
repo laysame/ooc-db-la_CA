@@ -48,7 +48,8 @@ public class AuthenticationManager {
 
         this.databaseManager.addUser(user);
 
-        return user;
+        // Get the user from the database in order to retrieve the auto increment-generated primary key
+        return this.databaseManager.getUserByUsername(user.getUsername());
     }
 
     private String encodePassword(String password) {
