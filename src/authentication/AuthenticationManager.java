@@ -3,6 +3,7 @@ package authentication;
 import db.DatabaseManager;
 import models.AccountType;
 import models.User;
+import models.UserDoesNotExistException;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -16,16 +17,20 @@ public class AuthenticationManager {
     }
 
     public User authenticate(String username, String password) {
-        User user = this.databaseManager.getUserByUsername(username);
+        try {
+            User user = this.databaseManager.getUserByUsername(username);
+            String encodedPassword = encodePassword(password);
 
-        String encodedPassword = encodePassword(password);
+            // Check if the encoded password stored in the database is different the encoded password just passed
+            if (!user.getPassword().equals(encodedPassword)) {
+                throw new InvalidUsernameOrPasswordException();
+            }
 
-        // Check if the encoded password stored in the database is different the encoded password just passed
-        if (!user.getPassword().equals(encodedPassword)) {
+            return user;
+
+        } catch (UserDoesNotExistException e) {
             throw new InvalidUsernameOrPasswordException();
         }
-
-        return user;
     }
 
     public User register(String username, String password, String firstName, String lastName) {

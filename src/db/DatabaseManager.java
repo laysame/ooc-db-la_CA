@@ -1,5 +1,6 @@
 package db;
 
+import authentication.UsernameAlreadyUsedException;
 import models.AccountType;
 import models.Operation;
 import models.User;
@@ -45,6 +46,38 @@ public class DatabaseManager {
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public User getUserById(int id) {
+        try {
+            Statement statement = connection.createStatement();
+            statement.execute("USE " + database);
+
+            ResultSet resultSet = statement.executeQuery(
+                    "SELECT * FROM user INNER JOIN account_type " +
+                            "ON user.account_type_id = account_type.account_type_id WHERE user_id = " + id + ";"
+            );
+
+            resultSet.next();
+
+            AccountType accountType = new AccountType();
+            accountType.setAccountId(resultSet.getInt("account_type_id"));
+            accountType.setDescription(resultSet.getString("description"));
+
+            User user = new User();
+            user.setUserId(resultSet.getInt("user_id"));
+            user.setUsername(resultSet.getString("username"));
+            user.setPassword(resultSet.getString("password"));
+            user.setFirstName(resultSet.getString("first_name"));
+            user.setLastName(resultSet.getString("last_name"));
+            user.setAccountType(accountType);
+            user.setCreatedOn(resultSet.getDate("created_on"));
+
+            return user;
+
+        } catch (SQLException e) {
+            throw new UserDoesNotExistException();
         }
     }
 
@@ -136,6 +169,8 @@ public class DatabaseManager {
 
             return true;
 
+        } catch (SQLIntegrityConstraintViolationException e) {
+            throw new UsernameAlreadyUsedException();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

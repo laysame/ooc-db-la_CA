@@ -7,7 +7,7 @@ public interface DataInputInterface {
      * @param maxValue Maximum value expected from the user as an integer
      * @return a valid number as an integer
      */
-    public int askInteger(String prompt, int minValue, int maxValue);
+    public int askNumberOfVariables(String prompt, int minValue, int maxValue);
 
     /**
      * Asks the user to input a number within a range and return a double value
@@ -17,5 +17,9 @@ public interface DataInputInterface {
      * @return -- valid number as an integer as double
      */
 
+    public int askInteger(String prompt, int minValue, int maxValue);
+
     public double askDouble(String prompt);
+
+    public String askString(String prompt);
 }

@@ -9,7 +9,7 @@ public class SystemOfLinearEquationsSystemSolver implements SystemSolverInterfac
 
     @Override
     public int getNumOfVariables() {
-        int numOfVariables = dataInput.askInteger("***** Hello :) *****\n" + "This is a Systems of Linear Equations of two and three variables Solver!\n" + "You can start using it by typing in the quantity of variables for both equations:\n", 2, 3);
+        int numOfVariables = dataInput.askNumberOfVariables("***** Hello :) *****\n" + "This is a Systems of Linear Equations of two and three variables Solver!\n" + "You can start using it by typing in the quantity of variables for both equations:\n", 2, 3);
         return numOfVariables;
     }
 

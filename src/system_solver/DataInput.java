@@ -10,7 +10,7 @@ public class DataInput implements DataInputInterface {
 // >> (ax + by + c = 0) /  >> (ax + by + cz + d = 0)
 
     @Override
-    public int askInteger(String prompt, int minValue, int maxValue) {
+    public int askNumberOfVariables(String prompt, int minValue, int maxValue) {
         boolean valid = false;
         do {
             System.out.println(prompt);
@@ -34,6 +34,33 @@ public class DataInput implements DataInputInterface {
         return numberInt;
     }
 
+    public int askInteger(String prompt, int minValue, int maxValue) {
+        Scanner input = new Scanner(System.in);
+        boolean valid = false;
+        int userInput = -1; //defaulted to -1
+
+        do {
+            System.out.println(prompt);
+
+            try {
+                userInput = Integer.parseInt(input.nextLine());
+                // check the range
+                if ((userInput < minValue) || (userInput > maxValue)) {
+                    System.out.println("Invalid value entered. Please try a number within the range specified");
+                } else {
+                    valid = true;
+                }
+
+            } catch (Exception e) {
+                System.out.println("ERROR -- That's not an integer value. Please, try again!");
+            }
+
+        } while (!valid);
+        // must be a valid number now
+
+        return userInput;
+    }
+
     @Override
     public double askDouble(String prompt) {
         boolean valid = false;
@@ -49,5 +76,18 @@ public class DataInput implements DataInputInterface {
         } while (!valid);
 
         return numberDb;
+    }
+
+    @Override
+    public String askString(String prompt) {
+        Scanner input = new Scanner(System.in);
+        String userInput = "";
+
+        do {
+            System.out.println(prompt);
+            userInput = input.nextLine();
+        } while (userInput.isEmpty());
+
+        return userInput;
     }
 }
